@@ -18,7 +18,7 @@ EOT
     name                = string
     resource_group_name = string
     sku_name            = string
-    mode                = optional(string, "Gen1")
+    mode                = optional(string) # Default: "Gen1"
     tags                = optional(map(string))
   }))
 }
