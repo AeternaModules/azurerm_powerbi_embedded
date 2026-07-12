@@ -1,3 +1,7 @@
+output "powerbi_embeddeds_id" {
+  description = "Map of id values across all powerbi_embeddeds, keyed the same as var.powerbi_embeddeds"
+  value       = { for k, v in azurerm_powerbi_embedded.powerbi_embeddeds : k => v.id }
+}
 output "powerbi_embeddeds_administrators" {
   description = "Map of administrators values across all powerbi_embeddeds, keyed the same as var.powerbi_embeddeds"
   value       = { for k, v in azurerm_powerbi_embedded.powerbi_embeddeds : k => v.administrators }
