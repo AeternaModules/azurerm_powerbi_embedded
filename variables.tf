@@ -18,17 +18,9 @@ EOT
     name                = string
     resource_group_name = string
     sku_name            = string
-    mode                = optional(string) # Default: "Gen1"
+    mode                = optional(string)
     tags                = optional(map(string))
   }))
-  validation {
-    condition = alltrue([
-      for k, v in var.powerbi_embeddeds : (
-        contains(["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"], v.sku_name)
-      )
-    ])
-    error_message = "must be one of: A1, A2, A3, A4, A5, A6, A7, A8"
-  }
   # --- Unconfirmed validation candidates, derived from azurerm_powerbi_embedded's provider source ---
   # Not auto-enabled: either a bespoke provider validator we can't safely translate,
   # or a path that crosses a list-typed block (needs its own for_each wrapping).
@@ -51,6 +43,9 @@ EOT
   #   source:    [from resourcegroups.ValidateName: invalid when len(value) == 0]
   # path: resource_group_name
   #   source:    [from resourcegroups.ValidateName] !matched
+  # path: sku_name
+  #   condition: contains(["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"], value)
+  #   message:   must be one of: A1, A2, A3, A4, A5, A6, A7, A8
   # path: administrators[*]
   #   source:    [from validate.EmbeddedAdministratorName] !regexp.MustCompile(`^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$`).MatchString(value)
   # path: administrators[*]
